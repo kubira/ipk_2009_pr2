@@ -1,0 +1,102 @@
+               _____  ______          _____  __  __ ______ 
+              |  __ \|  ____|   /\   |  __ \|  \/  |  ____|
+              | |__) | |__     /  \  | |  | | \  / | |__   
+              |  _  /|  __|   / /\ \ | |  | | |\/| |  __|  
+              | | \ \| |____ / ____ \| |__| | |  | | |____ 
+              |_|  \_\______/_/    \_\_____/|_|  |_|______|
+
+
+Autor:
+    Radim Kubi¹ (xkubis03)
+
+Popis:
+    Jednoduchá adresáøová slu¾ba. Klient získává od serveru po¾adované informace
+    o osobách uvedených v databázi. Databáze je prezentována textovým souborem.
+    Server umo¾òuje vyhledávání v seznamu osob podle kritérií. Kritéria jsou
+    jméno, pøíjmení, login, fakulta. Kritéria lze kombinovat. Získané informace
+    vypí¹e na standardní výstup.
+
+VSTUPY:
+    Serverová aplikace (argumenty pøíkazového øádku)
+    ------------------------------------------------
+
+        -p <port> - èíslo portu pro komunikaci s klienty
+        
+    Klientská aplikace (argumenty pøíkazového øádku)
+    ------------------------------------------------
+    
+        -h <hostname> - adresa serveru se serverovou aplikací
+        -p <port> - èíslo portu pro komunikaci se serverem
+        
+        -NSLF - poøadí výpisu sloupcù nalezeného záznamu
+            -N - jméno
+            -S - pøíjmení
+            -L - login
+            -F - fakulta
+        
+        Pozn.:
+            Je mo¾né zadat sloupce v jakémkoliv poøadí. Mohou být i vícekrát
+            ve výpisu. Záznamy se budou vypisovat v poøadí, jaké je urèeno.
+            Pø.:
+                -NSFLSN => Radim Kubis FIT xkubis03 Kubis Radim
+                -NSL    => Radim Kubis xkubis03
+                -LNS    => xkubis03 Radim Kubis
+            Pokud není zadána ¾ádná volba, pou¾ije se -NSLF (výpsáno varování).
+        
+        -n <name> - filtrovací kritérium záznamù podle jména
+        -s <surname> - filtrovací kritérium záznamù podle pøíjmení
+        -l <login> - filtrovací kritérium záznamù podle loginu
+        -f <faculty> - filtrovací kritérium záznamù podle fakulty
+        
+        END - ukonèí serverovou aplikaci
+        
+        Pozn.:
+            Klientské aplikaci nezále¾í na poøadí argumentù v pøíkazovém øádku.
+            Pø.:
+                -h eva.fit.vutbr.cz -p 1234 -NL
+                -p 1234 -h eva.fit.vutbr.cz -LSN
+                -LNS -h eva.fit.vutbr.cz -l xkubis03 -p 1234
+                -p 1234 -n Radim -s Kubis -h eva.fit.vutbr.cz
+
+VÝSTUPY:
+    Serverová aplikace
+    ------------------
+
+        Serverová aplikace nemá ¾ádné standardní výstupy.
+        
+        Chyby vypisuje na standardní chybový výstup.
+        
+    Klientská aplikace
+    ------------------
+    
+        Klientská aplikace vypisuje na standardní výstup záznamy nalezené
+        v databázi podle zadaných kritérii, které obdr¾í od serverové aplikace
+        po sloupcích tak, jak bylo po¾adováno pøepínaèem -NSLF.
+
+KONTROLA:
+    Serverová aplikace
+    ------------------
+
+        - otevøení a uzavøení souboru s databází
+        - otevøení a uzavøení socketu
+        - zadání v¹ech povinných argumentù
+        - sí»ové funkce (bind, gethostbyaddr, ...)
+        - pøijmutí a odeslání zpráv
+        - kompilaci regulárního výrazu
+        - serverová aplikace je konkurentní
+
+    Klientská aplikace
+    ------------------
+    
+        - zadání v¹ech povinných argumentù
+        - zadání nepovinných argumentù, kdy¾ je zadán pøepínaè
+        - úspì¹nou alokaci pamìti
+        - otevøení a uzavøení socketu
+        - sí»ové funkce (send, recv, gethostbyname, ...)
+        - kompilaci regulárního výrazu
+        - pøi odeslání argumentu END se ukonèí serverová aplikace
+
+OMEZENÍ:
+    Serverová a klientská aplikace
+    ------------------------------
+        - pøi testování se ¾ádná omezení neprojevila, ale nejsou vylouèena ;)
